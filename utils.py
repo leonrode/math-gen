@@ -16,12 +16,10 @@ def precedence(operator):
 
 
 def infix_to_postfix(infix):
-
     stack = Stack()
     postfix = []
-    symbols = infix.split(" ")
 
-    for symbol in symbols:
+    for symbol in infix:
         # if operand
         if symbol not in operators and symbol not in parens:
             postfix.append(symbol)
@@ -39,21 +37,27 @@ def infix_to_postfix(infix):
     while stack.size() > 0:
         postfix.append(stack.pop())
 
-    return " ".join(postfix)
+    return "".join(postfix)
 
 
 def generate_expression_tree(postfix):
     stack = Stack()
-    symbols = postfix.split(" ")
 
-    for symbol in symbols:
+    for symbol in postfix:
         node = Node(symbol)
         if symbol not in operators:
             stack.push(node)
         else:
 
             right_operand = stack.pop()
-            left_operand = stack.pop()
+            left_operand = None
+
+            # we find an operator and the stack is empty,
+            # meaning this operator is a unary operator.
+            # the only unary operator defined so far is -
+            if stack.size() != 0:
+                left_operand = stack.pop()
+
             node.left = left_operand
             node.right = right_operand
             stack.push(node)

@@ -108,7 +108,7 @@ class Equation:
             return l_operand ** r_operand
 
 
-    def simplify(self) -> None: 
+    def simplify(self) -> None:
         nodes = self.get_all_nodes()
 
         for node in nodes:

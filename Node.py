@@ -1,21 +1,28 @@
 class Node:
-    operators = ["+", "-", "*", "/", "^"]
 
-    def __init__(self, value):
-        self.value = value
-        self.left = None
-        self.right = None
+    def __init__(self, value) -> None:
+        self.value: str = value
+        self.left: Node = None
+        self.right: Node = None
 
-    def is_unary_minus(self, node):
+    def is_unary_minus(self, node) -> bool:
         if node.value == "-" and node.right == None:
             return True
         return False
+
+    def is_numerical(self) -> bool:
+        return self.value.is_digit()
+
+    def is_operator(self) -> bool:
+        operators = ["+", "-", "*", "/", "^"]
+
+        return self.value in operators
 
     def __str__(self):
         res = ""
         parenthesize_expression = False
 
-        if self.value in self.operators:
+        if self.is_operator():
             parenthesize_expression = True
             res += "("
 
@@ -30,7 +37,7 @@ class Node:
         if self.left:
             res += str(self.left)
 
-        res += self.value
+        res += str(self.value)
 
         if self.right:
             res += str(self.right)

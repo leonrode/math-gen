@@ -1,10 +1,12 @@
 from Stack import Stack
 from Node import Node
+
+
 operators = ["+", "-", "*", "/", "^"]
 parens = ["(", ")"]
 
 
-def precedence(operator):
+def precedence(operator: str) -> int:
     if operator == "^":
         return 3
     elif operator in ["/", "*"]:
@@ -15,11 +17,13 @@ def precedence(operator):
         return 0
 
 
-def infix_to_postfix(infix):
-    stack = Stack()
-    postfix = []
+def infix_to_postfix(infix: str) -> str:
 
-    for symbol in infix:
+    stack: Stack = Stack()
+    postfix: list[str] = []
+    symbols = infix.split(" ")
+
+    for symbol in symbols:
         # if operand
         if symbol not in operators and symbol not in parens:
             postfix.append(symbol)
@@ -37,20 +41,22 @@ def infix_to_postfix(infix):
     while stack.size() > 0:
         postfix.append(stack.pop())
 
-    return "".join(postfix)
+    return " ".join(postfix)
 
 
-def generate_expression_tree(postfix):
+def generate_expression_tree(postfix: str) -> Node:
     stack = Stack()
+    symbols = postfix.split(" ")
 
-    for symbol in postfix:
+    for symbol in symbols:
         node = Node(symbol)
+
         if symbol not in operators:
             stack.push(node)
         else:
 
-            right_operand = stack.pop()
-            left_operand = None
+            right_operand: Node = stack.pop()
+            left_operand: Node | None = None
 
             # we find an operator and the stack is empty,
             # meaning this operator is a unary operator.

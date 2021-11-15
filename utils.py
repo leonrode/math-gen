@@ -44,6 +44,9 @@ def infix_to_postfix(infix: str) -> str:
     return " ".join(postfix)
 
 
+# In the case of division and exponentiation...
+# division: (node.left) / (node.right)
+# exponentiation: (node.left) ** (node.right)
 def generate_expression_tree(postfix: str) -> Node:
     stack = Stack()
     symbols = postfix.split(" ")

@@ -107,7 +107,7 @@ class Equation:
         elif operation == "^":
             return l_operand ** r_operand
 
-    
+
     def simplify(self) -> None:
         nodes = self.get_all_nodes()
 

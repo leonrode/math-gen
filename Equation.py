@@ -35,7 +35,7 @@ class Equation:
 
         self.root.left = left_parent
         self.root.right = right_parent
-    
+
     def multiply_expression(self, expression: Node) -> None:
         left_parent = Node("*")
         left_parent.left = expression
@@ -47,6 +47,7 @@ class Equation:
 
         self.root.left = left_parent
         self.root.right = right_parent
+
     def divide_expression(self, expression: Node) -> None:
         left_parent = Node("/")
         left_parent.left = expression
@@ -58,7 +59,7 @@ class Equation:
 
         self.root.left = left_parent
         self.root.right = right_parent
-    
+
     def subtract_expression(self, expression: Node) -> None:
         left_parent = Node("-")
         left_parent.left = expression
@@ -70,7 +71,7 @@ class Equation:
 
         self.root.left = left_parent
         self.root.right = right_parent
-    
+
     def do_operation_with_expression(self, expression: Node, operation: str) -> None:
         left_parent = Node(operation)
         left_parent.left = self.root.left
@@ -82,6 +83,7 @@ class Equation:
 
         self.root.left = left_parent
         self.root.right = right_parent
+
     def get_all_nodes(self) -> list[Node]:
         nodes = []
 
@@ -94,37 +96,14 @@ class Equation:
         traverse(self.root)
         return nodes
 
-    def operate(self, operation: str, l_operand: int | float, r_operand: int | float) -> int | float:
-        if operation == "+":
-            return l_operand + r_operand
-        elif operation == "-":
-            return l_operand - r_operand
-        elif operation == "*":
-            return l_operand * r_operand
-        elif operation == "/":
-            print(l_operand, r_operand, type(l_operand), type(r_operand))
-            return int(l_operand / r_operand) if (l_operand / r_operand == int(l_operand / r_operand)) else l_operand / r_operand
-        elif operation == "^":
-            return l_operand ** r_operand
-
-
     def simplify(self) -> None:
         nodes = self.get_all_nodes()
 
+        simplify_again = False
         for node in nodes:
-            if node.is_operator():
-                print(node.left.value, node.right.value)
-                print(type(node.left.value), type(node.right.value))
-                if node.left.value.isnumeric() and node.right.value.isnumeric():
-                    node.value = str(self.operate(
-                        node.value, int(node.left.value), int(node.right.value)))
-                    node.left = None
-                    node.right = None
-                
-                if node.is_division_operator():
-                    if Node.expressions_equal(node.left, node.right):
-                        # something like (x+5)/(x+5)
-                        node.value = "1"
-                        node.left = None
-                        node.right = None
 
+            if node.apply_simplification_rule():
+                simplify_again = True
+
+        if simplify_again:
+            self.simplify()

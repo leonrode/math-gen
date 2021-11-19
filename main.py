@@ -1,14 +1,18 @@
 from Node import Node
 from Equation import Equation
 
-from utils import infix_to_postfix
+from utils import generate_expression_tree, infix_to_postfix
 
 
-postfix = infix_to_postfix("( x ^ 2 ) * ( x ^ 5 )")
-tree = Node.generate_expression_tree(postfix)
-
-# print(tree)
 equation = Equation(Node("="))
-equation.set_left_side(tree)
-equation.simplify()
+
+left_postfix = infix_to_postfix("x")
+right_postfix = infix_to_postfix("5")
+
+equation.setup_equation(Node.generate_expression_tree(left_postfix), Node.generate_expression_tree(right_postfix))
+
+
+equation.exponent_expression(Node("2"))
+print(equation)
+equation.solve(equation.root.left)
 print(equation)

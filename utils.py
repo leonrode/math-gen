@@ -1,4 +1,6 @@
 from Stack import Stack
+from Node import Node
+
 
 operators = ["+", "-", "*", "/", "^"]
 parens = ["(", ")"]
@@ -45,11 +47,29 @@ def infix_to_postfix(infix: str) -> str:
 # In the case of division and exponentiation...
 # division: (node.left) / (node.right)
 # exponentiation: (node.left) ** (node.right)
+def generate_expression_tree(postfix: str) -> Node:
+    stack = Stack()
+    symbols = postfix.split(" ")
 
+    for symbol in symbols:
+        node = Node(symbol)
 
-# Return an integer if the string represents an integer, otherwise a float
-def return_correct_number_type(value: str) -> int | float:
-    value = float(value)
-    if value.is_integer():
-        return int(value)
-    return value
+        if symbol not in operators:
+            stack.push(node)
+        else:
+
+            right_operand: Node = stack.pop()
+            left_operand: Node | None = None
+
+            # we find an operator and the stack is empty,
+            # meaning this operator is a unary operator.
+            # the only unary operator defined so far is -
+            if stack.size() != 0:
+                left_operand = stack.pop()
+
+            node.left = left_operand
+            node.right = right_operand
+            stack.push(node)
+    # at this point the only value is the root node
+
+    return stack.pop()
